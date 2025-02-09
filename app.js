@@ -9,7 +9,8 @@ const allowedOrigins = [
     "http://localhost:8000",
     "http://localhost:3000",
     "https://practice-project-bice.vercel.app",
-    "https://mycampussafari.com"
+    "https://mycampussafari.com",
+    "https://mycampus-three.vercel.app"
 ];
 
 // CORS Middleware for Express
