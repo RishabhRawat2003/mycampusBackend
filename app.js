@@ -8,6 +8,7 @@ const allowedOrigins = [
     "http://localhost:5173",
     "http://localhost:8000",
     "http://localhost:3000",
+    "http://localhost:3001",
     "https://mycampussafari.com",
     "https://mycampus-three.vercel.app"
 ];
@@ -34,6 +35,11 @@ app.use(express.urlencoded({ extended: true, limit: '16kb' }))
 app.use(express.static('public'))
 
 import userRoutes from './routes/user.routes.js'
+import adminRoutes from './routes/admin.routes.js'
+import blogRoutes from './routes/blogs.routes.js'
+
 app.use('/api/v1', userRoutes)
+app.use('/api/v1/admin', adminRoutes)
+app.use('/api/v1/blog', blogRoutes)
 
 export { app }
