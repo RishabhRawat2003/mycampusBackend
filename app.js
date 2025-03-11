@@ -37,9 +37,13 @@ app.use(express.static('public'))
 import userRoutes from './routes/user.routes.js'
 import adminRoutes from './routes/admin.routes.js'
 import blogRoutes from './routes/blogs.routes.js'
+import packageRoutes from './routes/package.routes.js'
+
 
 app.use('/api/v1', userRoutes)
 app.use('/api/v1/admin', adminRoutes)
 app.use('/api/v1/blog', blogRoutes)
+app.use('/api/v1/package', packageRoutes)
+
 
 export { app }
