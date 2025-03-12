@@ -14,6 +14,8 @@ export const addBlog = async (req, res) => {
 
     const image = await uploadOnCloudinary(req.files.image[0].path)
 
+    console.log(image)
+
 
     const blog = await Blog.create({
         title: blogTitle,
