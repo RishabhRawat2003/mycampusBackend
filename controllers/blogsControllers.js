@@ -4,18 +4,11 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 export const addBlog = async (req, res) => {
     const { blogTitle, blogContent } = req.body
 
-    console.log(req.files)
-    console.log(req.files["image"])
-
-
     if (!blogTitle || !blogContent || !req.files || !req.files["image"]) {
         return res.status(401).json({ error: "Title, Category, tag and Image is required" })
     }
 
     const image = await uploadOnCloudinary(req.files.image[0].path)
-
-    console.log(image)
-
 
     const blog = await Blog.create({
         title: blogTitle,
