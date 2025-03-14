@@ -1,5 +1,6 @@
 import { Admin } from "../models/admin.model.js";
 import jwt from 'jsonwebtoken'
+import { packageBoughtByUser } from "./emailService.js";
 
 //this logic is to add admin credentials to backend
 export const addAdmin = async (req, res) => {
@@ -48,3 +49,34 @@ export const login = async (req, res) => {
         .status(200)
         .json({ message: "Authentication Complete", token, id: user._id });
 }
+
+
+export const contactAdminForPackage = async (req, res) => {
+    try {
+        const { name, email, phone, packageName, message } = req.body;
+
+        if (!name || !email || !phone || !packageName) {
+            return res.status(400).json({ error: "All fields except message are required." });
+        }
+
+        const emailMessage = `
+            📌 New Package Inquiry
+            
+            Name: ${name}
+            Email: ${email}
+            Phone: ${phone}
+            Package: ${packageName}
+            
+            Message: ${message || "No message provided."}
+        `;
+
+        const subject = `New Package Inquiry from ${name}`;
+
+        await packageBoughtByUser(email, emailMessage, subject);
+
+        res.status(200).json({ success: true, message: "Your inquiry has been sent successfully." });
+    } catch (error) {
+        console.error("Error handling package inquiry:", error);
+        res.status(500).json({ error: "Internal Server Error. Please try again later." });
+    }
+};
