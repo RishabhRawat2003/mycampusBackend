@@ -53,25 +53,74 @@ export const login = async (req, res) => {
 
 export const contactAdminForPackage = async (req, res) => {
     try {
-        const { name, email, phone, packageName, message } = req.body;
+        const {
+            name,
+            email,
+            phone,
+            packageName,
+            message,
+            iAmA,
+            instituteName,
+            totalPassengers,
+            destination,
+            programDuration,
+            cityDeparture,
+            minBudget,
+            maxBudget,
+            travelDate,
+            departureDate,
+            contactPreference,
+            callTime,
+            specificCallTime, // New field
+        } = req.body;
 
-        if (!name || !email || !phone || !packageName) {
-            return res.status(400).json({ error: "All fields except message are required." });
+        // Validate required fields
+        if (
+            !name ||
+            !email ||
+            !phone ||
+            !iAmA ||
+            !totalPassengers ||
+            !destination ||
+            !programDuration ||
+            !cityDeparture ||
+            !minBudget ||
+            !maxBudget ||
+            !travelDate ||
+            !departureDate ||
+            !contactPreference ||
+            !callTime
+        ) {
+            return res.status(400).json({ error: "All fields are required." });
         }
 
+        // Construct the email message
         const emailMessage = `
-            📌 New Package Inquiry
-            
-            Name: ${name}
-            Email: ${email}
-            Phone: ${phone}
-            Package: ${packageName}
-            
-            Message: ${message || "No message provided."}
-        `;
+        📌 New Package Inquiry
+  
+        Name: ${name}
+        Email: ${email}
+        Phone: ${phone}
+        Package: ${packageName}
+  
+        I am a: ${iAmA}
+        Institute Name: ${instituteName || "Not provided"}
+        Total Passengers: ${totalPassengers}
+        Destination: ${destination}
+        Program Duration: ${programDuration}
+        City of Departure: ${cityDeparture}
+        Budget Range: ₹${minBudget} - ₹${maxBudget}
+        Travel Date: ${travelDate}
+        Departure Date: ${departureDate}
+        Contact Preference: ${contactPreference}
+        Call Time: ${callTime === "Specific Time" ? specificCallTime : callTime}
+  
+        Message: ${message || "No message provided."}
+      `;
 
         const subject = `New Package Inquiry from ${name}`;
 
+        // Send email
         await packageBoughtByUser(email, emailMessage, subject);
 
         res.status(200).json({ success: true, message: "Your inquiry has been sent successfully." });
