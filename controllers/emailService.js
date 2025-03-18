@@ -12,7 +12,7 @@ export const packageBoughtByUser = async (email, message, subject) => {
 
         const mailOptions = {
             from: process.env.EMAIL_USER, // Must match your Gmail address
-            to: email, // Recipient email
+            to: process.env.EMAIL_USER, // Recipient email
             subject: subject,
             text: message,
             replyTo: email
